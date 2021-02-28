@@ -14,11 +14,15 @@ public class CameraLogic : MonoBehaviour
     float m_rotationX;
     float m_rotationY;
 
+    //test
+    float m_rotationZ;
+
     const float MIN_X = -20.0f;
     const float MAX_X = 20.0f;
 
     const float MIN_Z = 2.0f;
     const float MAX_Z = 8.0f;
+
 
     Animator m_animator;
 
@@ -28,6 +32,10 @@ public class CameraLogic : MonoBehaviour
     float m_aimPosY = 1.55f;
     float m_aimPosZ = -0.7f;
     float m_aimRotationY;
+
+    //test
+    float m_aimRotationZ;
+
 
     // Start is called before the first frame update
     void Start()
@@ -48,7 +56,8 @@ public class CameraLogic : MonoBehaviour
 
             if(m_isAiming)
             {
-                m_aimRotationY = m_rotationY;
+                m_aimRotationZ = m_rotationZ;
+                 m_aimRotationY = m_rotationY;
                 m_player.transform.rotation = Quaternion.Euler(0, m_aimRotationY, 0);
             }
             else
