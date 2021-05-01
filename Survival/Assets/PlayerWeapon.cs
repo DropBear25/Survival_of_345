@@ -5,31 +5,44 @@ using UnityEngine;
 public class PlayerWeapon : MonoBehaviour
 {
 
-    private Animator Anim;
+    public Animator Anim;
 
-    public bool Gun;
+    public static bool HaveGun = true;
+    [SerializeField] GameObject Crosshair;
+    [SerializeField] AudioClip GunShotSound;
+    private AudioSource MyPlayer;
+    
 
 
     void Start()
     {
-        
+        Crosshair.gameObject.SetActive(false);
+        MyPlayer = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Gun == true)
+
+        if(HaveGun == true)
         {
             if (Input.GetKey(KeyCode.Mouse1))
             {
                 Anim.SetBool("Aim", true);
-                
-                 
+                Crosshair.gameObject.SetActive(true);
+
+
             }
             if (Input.GetKeyUp(KeyCode.Mouse1))
             {
                 Anim.SetBool("Aim", false);
+                Crosshair.gameObject.SetActive(false);
 
+            }
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                MyPlayer.clip = GunShotSound;
+                MyPlayer.Play();
             }
         }
 
