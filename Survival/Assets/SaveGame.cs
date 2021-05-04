@@ -5,7 +5,7 @@ using UnityEngine;
 public class SaveGame : MonoBehaviour
 {
 
-    public static bool HaveGun = false;
+    //public static bool HaveGun = false;
 
     void Start()
     {
