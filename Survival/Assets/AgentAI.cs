@@ -10,6 +10,10 @@ public class AgentAI : MonoBehaviour
     //might need to rework 
     public AI_WayPoint_Network WayPointNetwork = null;
     public int CurrentIndex = 0;
+    public bool HasPath = false;
+    public bool PathPending = false;
+    public bool PathStale = false;
+    public NavMeshPathStatus PathStatus = NavMeshPathStatus.PathInvalid;
     private NavMeshAgent _navAgent = null;
 
 
@@ -29,9 +33,8 @@ public class AgentAI : MonoBehaviour
 
         int incStep = increment ? 1 : 0;
         Transform nextWaypointTransform = null;
+     
 
-        while (nextWaypointTransform ==null)
-        {
             int nextWayPoint = (CurrentIndex +incStep >= WayPointNetwork.Waypoints.Count) ?0:CurrentIndex + incStep;
             nextWaypointTransform = WayPointNetwork.Waypoints[nextWayPoint];
 
@@ -41,14 +44,29 @@ public class AgentAI : MonoBehaviour
                 _navAgent.destination = nextWaypointTransform.position;
                 return;
             }
-        }
+        
 
-        CurrentIndex++;
+        CurrentIndex=nextWayPoint;
 
     }
 
     void Update()
     {
+        HasPath = _navAgent.hasPath;
+        PathPending = _navAgent.pathPending;
+        PathStale = _navAgent.isPathStale;
+        PathStatus = _navAgent.pathStatus;
 
+
+        if ((_navAgent.remainingDistance <=_navAgent.stoppingDistance && !PathPending) || PathStatus==NavMeshPathStatus.PathInvalid || PathStatus == NavMeshPathStatus.PathPartial)
+        {
+            SetNextDestination(true);
+        }
+
+
+        if((!HasPath && !PathPending) || PathStatus==NavMeshPathStatus.PathInvalid || PathStatus==NavMeshPathStatus.PathPartial)
+            SetNextDestination(true);
+        else if (_navAgent.isPathStale)
+            SetNextDestination(false);
     }
 }
