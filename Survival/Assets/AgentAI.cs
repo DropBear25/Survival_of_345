@@ -15,11 +15,12 @@ public class AgentAI : MonoBehaviour
     public bool PathStale = false;
     public NavMeshPathStatus PathStatus = NavMeshPathStatus.PathInvalid;
     private NavMeshAgent _navAgent = null;
-
+    private Animator _animator = null;
 
     void Start()
     {
         _navAgent = GetComponent<NavMeshAgent>();
+        _animator = GetComponent<Animator>();
 
         if (WayPointNetwork == null) return;
 
@@ -57,6 +58,13 @@ public class AgentAI : MonoBehaviour
         PathStale = _navAgent.isPathStale;
         PathStatus = _navAgent.pathStatus;
 
+
+        Vector3 cross = Vector3.Cross(transform.forward, _navAgent.desiredVelocity.normalized);
+        float horizontal = (cross.y < 0) ? -cross.magnitude : cross.magnitude;
+        horizontal = Mathf.Clamp(horizontal * 2.32f, -2.32f, 2.32f);
+
+        _animator.SetFloat("Horizontal", horizontal, 0.1f, Time.deltaTime);
+        _animator.SetFloat("Vertical", _navAgent.desiredVelocity.magnitude, 0.1f, Time.deltaTime);
 
         if ((_navAgent.remainingDistance <=_navAgent.stoppingDistance && !PathPending) || PathStatus==NavMeshPathStatus.PathInvalid || PathStatus == NavMeshPathStatus.PathPartial)
         {
