@@ -10,12 +10,19 @@ public class ZombieAI : MonoBehaviour
     Animator anim;
     NavMeshAgent agent;
 
+
+    enum STATE { IDLE, WANDER, ATTACK, CHASE, DEAD};
+    STATE state = STATE.IDLE; 
+
+
+
     void Start()
     {
         agent = this.GetComponent<NavMeshAgent>();
         anim = this.GetComponent<Animator>();
 
         anim.SetBool("isWalking", true);
+      
     }
 
     // Update is called once per frame
