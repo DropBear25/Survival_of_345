@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Gun
+  - Ammo
+  - MedBox
   layers:
   - Default
   - TransparentFX
