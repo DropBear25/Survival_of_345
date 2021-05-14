@@ -14,17 +14,54 @@ public class PlayerWeapon : MonoBehaviour
     public AudioSource healthPickup;
     private AudioSource MyPlayer;
 
+    //test
+    public AudioSource triggerSound;
+    public AudioSource deathSound;
+    public AudioSource reloadSound;
 
-    int ammo = 0;
-    int maxAmmo = 50;    
+    public Transform shotDir;
+  //  Rigidbody rb;
 
+    int ammo = 50;
+    int maxAmmo = 50;
+    int health = 10;
+    int maxHealth = 100;
+
+
+    //test 
+    int ammoClip = 0;
+    int ammoClipMax = 10;
 
     void Start()
     {
+      //  rb = this.GetComponent<Rigidbody>();
         Crosshair.gameObject.SetActive(false);
         MyPlayer = GetComponent<AudioSource>();
+
+        
+        health = maxHealth;
     }
 
+    void ProcessZombieHit()
+    {
+        RaycastHit hitInfo;
+        if(Physics.Raycast(shotDir.position, shotDir.forward, out hitInfo, 200))
+        {
+            GameObject hitZombie = hitInfo.collider.gameObject;
+            if(hitZombie.tag == "Zombie")
+            {
+                GameObject rdPrefab = hitZombie.GetComponent<ZombieAI>().ragdoll;
+                GameObject newRD = Instantiate(rdPrefab, hitZombie.transform.position, hitZombie.transform.rotation);
+                newRD.transform.Find("Hips").GetComponent<Rigidbody>().AddForce(shotDir.forward * 10000);
+                Destroy(hitZombie);
+            }
+            else
+            {
+                hitZombie.GetComponent<ZombieAI>().killZombie();
+            }
+
+        }
+    }
 
     
         // Update is called once per frame
@@ -48,17 +85,33 @@ public class PlayerWeapon : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                //  if (ammoClip > 0)
-                //    {
-                //        //Gun Shot Fire
-                       MyPlayer.clip = GunShotSound;
-                        MyPlayer.Play();
+                if (ammoClip > 0)
+                {
+                    //        //Gun Shot Fire
+                    
+                    MyPlayer.clip = GunShotSound;
+                    MyPlayer.Play();
+                    ProcessZombieHit();
+                    ammoClip--;
+                }
+                else if (Anim.GetBool("Aim"))
+                    triggerSound.Play();
+
+                    Debug.Log("Ammo Left in Clip: " + ammoClip);            
             }
 
-        }
-        if (Input.GetKeyDown(KeyCode.R))
+
+        }//THIS MAY NEED TO BE CHANGED && Anim.GetBool("Aim"))
+        if (Input.GetKeyDown(KeyCode.R) && Anim.GetBool("Aim"))
         {
             Anim.SetTrigger("Reload");
+            reloadSound.Play();
+            int ammoNeeded = ammoClipMax - ammoClip;
+            int ammoAvaliable = ammoNeeded < ammo ? ammoNeeded : ammo;
+            ammo -= ammoAvaliable;
+            ammoClip += ammoAvaliable;
+            Debug.Log("Ammo Left: " + ammo);
+            Debug.Log("Ammo in Clip" + ammoClip);
         }
 
     }
@@ -68,23 +121,34 @@ public class PlayerWeapon : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.CompareTag("Ammo"))
+        if (col.gameObject.tag == "Ammo" && ammo < maxAmmo)
         {
-            ammo += 10;
-            Debug.Log("Ammo" + ammo);
+            ammo = Mathf.Clamp(ammo + 10, 0, maxAmmo);
+            Debug.Log("Ammo: " + ammo);
             Destroy(col.gameObject);
             //   ammoPickup.Play();
 
 
         }
-        else if (col.gameObject.tag == "MedBox")
+        else if (col.gameObject.tag == "MedBox" && health < maxHealth)
         {
-            Debug.Log("MedBox");
+
+            health = Mathf.Clamp(health + 25, 0, maxHealth);
+            Debug.Log("MedBox: " + health);
             Destroy(col.gameObject);
             //healthPickup.Play();
 
         }
-    }
+        else if(col.gameObject.tag == "Lava")
+        {
+            health = Mathf.Clamp(health -50, 0, maxHealth);
+            Debug.Log("Health Level: " + health);
+            if(health <= 0)
+            {
+                deathSound.Play();
+            }
+        }
+    }  
 
 
 

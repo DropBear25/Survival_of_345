@@ -7,6 +7,9 @@ TagManager:
   - Gun
   - Ammo
   - MedBox
+  - Lava
+  - Zombie
+  - Ragdoll
   layers:
   - Default
   - TransparentFX

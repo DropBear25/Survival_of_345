@@ -13,7 +13,7 @@ public class ZombieAI : MonoBehaviour
     Animator anim;
     NavMeshAgent agent;
 
-
+     
     enum STATE { IDLE, WANDER, ATTACK, CHASE, DEAD };
     STATE state = STATE.IDLE; 
 
@@ -54,10 +54,18 @@ public class ZombieAI : MonoBehaviour
         return false;
     }
 
-    // Update is called once per frame
+    public void killZombie()
+    {
+        TurnOffTriggers();
+        anim.SetBool("isDead", true);
+        state = STATE.DEAD;
+    }
+
+
+   
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+      /*  if (Input.GetKeyDown(KeyCode.P))
         {
             if (Random.Range(0, 10) < 5)
             {
@@ -72,7 +80,7 @@ public class ZombieAI : MonoBehaviour
                 state = STATE.DEAD;
             }
             return;
-        }   
+        }   */
       if(target == null)
         {
            target = GameObject.FindWithTag("Player");
@@ -133,6 +141,8 @@ public class ZombieAI : MonoBehaviour
                     state = STATE.CHASE;
                 break;
             case STATE.DEAD:
+                Destroy(agent);
+                this.GetComponent<ZombieCleanup>().StartSink();
                 break;
         }
     }
