@@ -5,20 +5,20 @@ using UnityEngine;
 public class SpeedController : MonoBehaviour
 {
 
-    public float Speed = 0.0f;
+   // public float Speed = 0.0f;
 
-    private Animator _controller = null;
+  //  private Animator _controller = null;
 
 
 
     void Start()
     {
-        _controller = GetComponent<Animator>();
+   //     _controller = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        _controller.SetFloat("Speed", Speed);
+      //  _controller.SetFloat("Speed", Speed);
     }
 }

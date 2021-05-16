@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
+using System.Collections;
+using System.Collections.Generic;
+
 
 #pragma warning disable 618, 649
 namespace UnityStandardAssets.Characters.FirstPerson
@@ -29,6 +32,22 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
 
+
+        private float SetRunSpeed;
+        [SerializeField] float Stamina = 10.0f;
+        [SerializeField] float MaxStamina = 10.0f;
+        [SerializeField] int DecayRate = 1;
+        [SerializeField] float RefillRate = 0.25f;
+        [SerializeField] GameObject LightBreathing;
+        [SerializeField] GameObject HeavyBreathing;
+        //breathing sound  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        //Heavy breathing sound  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+        private bool LightBreath = false;
+        private bool HeavyBreath = false;
+
+
+
         private Camera m_Camera;
         private bool m_Jump;
         private float m_YRotation;
@@ -43,6 +62,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
+
+      //  public AudioClip lightbreathingClip;
 
         //test 
         Rigidbody rb;
@@ -66,12 +87,84 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
             m_MouseLook.Init(transform, m_Camera.transform);
+
+
+            LightBreathing.gameObject.SetActive(false);
+            HeavyBreathing.gameObject.SetActive(false);
+            SetRunSpeed = m_RunSpeed;
+          
+
         }
 
 
         // Update is called once per frame
         private void Update()
         {
+            if(LightBreath == false)
+            {
+                if(Stamina < 3)
+                {
+                    //Sound
+                    LightBreathing.gameObject.SetActive(true);
+                    HeavyBreathing.gameObject.SetActive(false);
+                    LightBreath = true;
+                }
+            }
+
+            if(LightBreath == true)
+            {
+                if(Stamina > 3)
+                {
+                    //Sound
+                    LightBreathing.gameObject.SetActive(false);
+                    HeavyBreathing.gameObject.SetActive(false);
+                    LightBreath = false;
+                    m_RunSpeed = SetRunSpeed;
+                }
+            }
+
+            if (HeavyBreath == false)
+            {
+                if (Stamina < 1.5)
+                {
+                    //Sound
+                    LightBreathing.gameObject.SetActive(false);
+                    HeavyBreathing.gameObject.SetActive(true);
+                    m_RunSpeed = m_WalkSpeed;
+                    HeavyBreath = true;
+                }
+            }
+
+            if (HeavyBreath == true)
+            {
+                if (Stamina > 1.5)
+                {
+                    LightBreathing.gameObject.SetActive(false);
+                    HeavyBreathing.gameObject.SetActive(false);
+                    //Sound
+                    HeavyBreath = false;
+                }
+            }
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                if(Stamina > 0.1)
+                {
+                    Stamina = Stamina - DecayRate * Time.deltaTime;
+                }
+            }
+            if (!Input.GetKey(KeyCode.LeftShift))
+            {
+                if (Stamina < MaxStamina)
+                {
+                    Stamina = Stamina + RefillRate * Time.deltaTime;
+                }
+            }
+            if(Stamina <= 0.1)
+            {
+                Stamina = 0.1f; 
+            }
+
             RotateView();
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)

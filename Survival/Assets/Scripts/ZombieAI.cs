@@ -13,7 +13,8 @@ public class ZombieAI : MonoBehaviour
     public float damageAmount = 15;
 
 
-    public int enemyHealth = 1;
+    public int shotsRequired = 1;
+    [HideInInspector]
     public int shotsTaken;
 
 
@@ -21,7 +22,9 @@ public class ZombieAI : MonoBehaviour
     Animator anim;
     NavMeshAgent agent;
 
-     
+  
+
+
     enum STATE { IDLE, WANDER, ATTACK, CHASE, DEAD };
     STATE state = STATE.IDLE; 
 
@@ -29,6 +32,7 @@ public class ZombieAI : MonoBehaviour
 
     void Start()
     {
+      
         agent = this.GetComponent<NavMeshAgent>();
         anim = this.GetComponent<Animator>();  
     }
@@ -45,11 +49,13 @@ public class ZombieAI : MonoBehaviour
     float DistanceToPlayer()
     {
         return Vector3.Distance(target.transform.position, this.transform.position);
+       
     }
 
     bool CanSeePlayer()
     {
         if (DistanceToPlayer() < 10)
+
             return true;
         return false;
        
@@ -99,6 +105,7 @@ public class ZombieAI : MonoBehaviour
       if(target == null)
         {
            target = GameObject.FindWithTag("Player");
+        //    SoundManager.instance.PlaySoundFX(MurmerClip);
             return;
         }
       switch (state)
@@ -119,6 +126,7 @@ public class ZombieAI : MonoBehaviour
                     agent.stoppingDistance = 0;
                     TurnOffTriggers();
                     agent.speed = walkingSpeed;
+                        
                     anim.SetBool("isWalking", true);
                 }
                 if (CanSeePlayer()) state = STATE.CHASE;
