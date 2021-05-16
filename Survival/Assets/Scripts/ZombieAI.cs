@@ -9,6 +9,14 @@ public class ZombieAI : MonoBehaviour
     public GameObject target;
     public float walkingSpeed;
     public float runningSpeed;
+
+    public float damageAmount = 15;
+
+
+    public int enemyHealth = 1;
+    public int shotsTaken;
+
+
     public GameObject ragdoll;
     Animator anim;
     NavMeshAgent agent;
@@ -61,7 +69,14 @@ public class ZombieAI : MonoBehaviour
         state = STATE.DEAD;
     }
 
+    public void DamagePlayer()
+    {
+        target.GetComponent<PlayerWeapon>().TakeHit(damageAmount);
 
+
+
+        //PlaySound();   play hit sound set up audio RANGE Off sounds xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    }
    
     void Update()
     {

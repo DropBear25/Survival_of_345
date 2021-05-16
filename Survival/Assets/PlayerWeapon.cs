@@ -1,45 +1,89 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerWeapon : MonoBehaviour
 {
 
     public Animator Anim;
+    public Slider healthbar;
+    public Text ammoReserves;
+    public Text ammoClipAmount;
+
+    public GameObject bloodPrefab;
+
 
     public static bool HaveGun = true;
     [SerializeField] GameObject Crosshair;
-    [SerializeField] AudioClip GunShotSound;
+   // [SerializeField] AudioClip GunShotSound;
     public AudioSource ammoPickup;
     public AudioSource healthPickup;
-    private AudioSource MyPlayer;
+   // private AudioSource MyPlayer;
 
     //test
-    public AudioSource triggerSound;
+  //  public AudioSource triggerSound;
     public AudioSource deathSound;
-    public AudioSource reloadSound;
+   // public AudioSource reloadSound;
+
+
+    //test
+    public AudioClip[] shootClips;
+    public AudioClip shootClip;
+    public AudioClip reloadClip;
+    public AudioClip emptyTriggerClip;
+
+
 
     public Transform shotDir;
+
   //  Rigidbody rb;
 
     int ammo = 50;
     int maxAmmo = 50;
-    int health = 10;
+    int health = 100;
     int maxHealth = 100;
 
 
-    //test 
+ 
     int ammoClip = 0;
     int ammoClipMax = 10;
 
+
+    //test 
+  //  public static bool canShoot = true;
+
+
+    public void TakeHit(float amount)
+    {
+        health = (int)Mathf.Clamp(health - amount, 0, maxHealth);
+        healthbar.value = health;
+        Debug.Log("Health " + health);
+
+        if(health <= 0)
+        {
+            //PUT IN AN ENUMERATOR AND GAME OVER SCENE HERE XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            Debug.Log("Dead as a doornail");
+        }
+    }
     void Start()
     {
       //  rb = this.GetComponent<Rigidbody>();
         Crosshair.gameObject.SetActive(false);
-        MyPlayer = GetComponent<AudioSource>();
+      //  MyPlayer = GetComponent<AudioSource>();
 
+        values();
         
-        health = maxHealth;
+     
+    }
+
+    private void values()
+    {
+          health = maxHealth;
+        healthbar.value = health;
+        ammoReserves.text = ammo + "";
+        ammoClipAmount.text = ammoClip + "";
     }
 
     void ProcessZombieHit()
@@ -50,14 +94,19 @@ public class PlayerWeapon : MonoBehaviour
             GameObject hitZombie = hitInfo.collider.gameObject;
             if(hitZombie.tag == "Zombie")
             {
+               // GameObject blood = Instantiate(bloodPrefab, hitInfo.point, Quaternion.identity);
                 GameObject rdPrefab = hitZombie.GetComponent<ZombieAI>().ragdoll;
                 GameObject newRD = Instantiate(rdPrefab, hitZombie.transform.position, hitZombie.transform.rotation);
                 newRD.transform.Find("Hips").GetComponent<Rigidbody>().AddForce(shotDir.forward * 10000);
                 Destroy(hitZombie);
+
+              //  hitZombie.GetComponent<ZombieAI>().shotsTaken++;
+             //   if (hitZombie.GetComponent<ZombieAI>().shotsTaken ==
+             //       hitZombie.GetComponent<ZombieAI>().enemyHealth)
             }
             else
             {
-                hitZombie.GetComponent<ZombieAI>().killZombie();
+             //   hitZombie.GetComponent<ZombieAI>().killZombie();
             }
 
         }
@@ -83,35 +132,45 @@ public class PlayerWeapon : MonoBehaviour
                 Crosshair.gameObject.SetActive(false);
 
             }
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            if (Input.GetKeyDown(KeyCode.Mouse0) && Anim.GetBool("Aim"))  
             {
                 if (ammoClip > 0)
                 {
                     //        //Gun Shot Fire
-                    
-                    MyPlayer.clip = GunShotSound;
-                    MyPlayer.Play();
-                    ProcessZombieHit();
+
+                    // MyPlayer.clip = GunShotSound;
+                    // MyPlayer.Play();
+
                     ammoClip--;
+                    ammoClipAmount.text = ammoClip + "";
+                    SoundManager.instance.PlaySoundFX(shootClip);
+                    ProcessZombieHit();
+                   
+                    //test 
+                  //  canShoot = false;
                 }
                 else if (Anim.GetBool("Aim"))
-                    triggerSound.Play();
-
-                    Debug.Log("Ammo Left in Clip: " + ammoClip);            
+                    SoundManager.instance.PlaySoundFX(emptyTriggerClip);
+             //   triggerSound.Play();
+                //Empty gun xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                   // Debug.Log("Ammo Left in Clip: " + ammoClip);            
             }
 
 
-        }//THIS MAY NEED TO BE CHANGED && Anim.GetBool("Aim"))
+        }
         if (Input.GetKeyDown(KeyCode.R) && Anim.GetBool("Aim"))
         {
             Anim.SetTrigger("Reload");
-            reloadSound.Play();
+            SoundManager.instance.PlaySoundFX(reloadClip);
+          //  reloadSound.Play(); //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
             int ammoNeeded = ammoClipMax - ammoClip;
             int ammoAvaliable = ammoNeeded < ammo ? ammoNeeded : ammo;
             ammo -= ammoAvaliable;
             ammoClip += ammoAvaliable;
-            Debug.Log("Ammo Left: " + ammo);
-            Debug.Log("Ammo in Clip" + ammoClip);
+            ammoReserves.text = ammo + "";
+            ammoClipAmount.text = ammoClip + "";
+          //  Debug.Log("Ammo Left: " + ammo);
+          //  Debug.Log("Ammo in Clip" + ammoClip);
         }
 
     }
@@ -126,6 +185,7 @@ public class PlayerWeapon : MonoBehaviour
             ammo = Mathf.Clamp(ammo + 10, 0, maxAmmo);
             Debug.Log("Ammo: " + ammo);
             Destroy(col.gameObject);
+            ammoReserves.text = ammo + ""; 
             //   ammoPickup.Play();
 
 
@@ -134,6 +194,7 @@ public class PlayerWeapon : MonoBehaviour
         {
 
             health = Mathf.Clamp(health + 25, 0, maxHealth);
+            healthbar.value = health;
             Debug.Log("MedBox: " + health);
             Destroy(col.gameObject);
             //healthPickup.Play();
