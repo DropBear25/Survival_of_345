@@ -11,10 +11,12 @@ public class Spawn : MonoBehaviour
     public float spawnRadius;
    public bool SpawnOnStart = true;
 
+ 
 
     void Start()
     {
-        if(SpawnOnStart)
+      
+        if (SpawnOnStart)
         SpawnAll();
            
     }
@@ -29,6 +31,7 @@ public class Spawn : MonoBehaviour
             if (NavMesh.SamplePosition(randomPoint, out hit, 10.0f, NavMesh.AllAreas))
             {
                 Instantiate(zombiePrefab, hit.position, Quaternion.identity);
+
             }
             else
                 i--;
@@ -37,8 +40,14 @@ public class Spawn : MonoBehaviour
  
     void OnTriggerEnter(Collider collider)
     {
-            if (!SpawnOnStart && collider.gameObject.tag == "Player")
+        
+        if (!SpawnOnStart && collider.gameObject.tag == "Player")
+
+            Destroy(gameObject, 3);
                 SpawnAll();
+                
+
+
     }
 
 
