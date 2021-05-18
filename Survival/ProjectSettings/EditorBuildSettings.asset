@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Surival.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: fbe8cebe80b46b146ae06d8729b6c384
+  - enabled: 1
+    path: Assets/Scenes/UndeadWoods.unity
+    guid: 3cae56b00c1ec714f99b9cc20048960b
   m_configObjects: {}

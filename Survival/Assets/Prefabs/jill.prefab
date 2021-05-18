@@ -3840,7 +3840,7 @@ GameObject:
   - component: {fileID: 5754707758464776684}
   - component: {fileID: 5754707758464776685}
   - component: {fileID: 5754707758464776693}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: jill
   m_TagString: Zombie
   m_Icon: {fileID: 0}
