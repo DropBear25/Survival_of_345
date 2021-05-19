@@ -7,8 +7,7 @@ public class RadarBlips : MonoBehaviour
 {
     //image position 
     public Image image;
-
-
+    internal static bool enable;
 
     void Start()
     {

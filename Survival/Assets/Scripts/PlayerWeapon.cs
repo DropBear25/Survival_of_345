@@ -66,7 +66,7 @@ public class PlayerWeapon : MonoBehaviour
         //getting hit sound xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  
         health = (int)Mathf.Clamp(health - amount, 0, maxHealth);
         healthbar.value = health;
-        Debug.Log("Health " + health);
+        //Debug.Log("Health " + health);
 
         if (health <= 0)
         {
