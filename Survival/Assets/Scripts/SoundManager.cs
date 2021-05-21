@@ -29,8 +29,17 @@ public class SoundManager : MonoBehaviour
         soundFX.Play();
     }
 
-    internal void PlaySoundFX(AudioSource helicopterClip)
+    //internal void PlaySoundFX(AudioSource helicopterClip)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    public void PlayZombieFX(AudioClip z_clip)
     {
-        throw new NotImplementedException();
+        soundFX.clip = z_clip;
+        soundFX.volume = UnityEngine.Random.Range(.2f, .5f);
+       // soundFX.pitch = UnityEngine.Random.Range(.3f, 1);
+        soundFX.Play();
     }
+
 }

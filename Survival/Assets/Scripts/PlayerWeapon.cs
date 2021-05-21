@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
+using Random = UnityEngine.Random;
 
 public class PlayerWeapon : MonoBehaviour
 {
@@ -15,13 +15,15 @@ public class PlayerWeapon : MonoBehaviour
     public Text ammoClipAmount;
 
     public GameObject bloodPrefab;
+    public GameObject uiBloodPrefab;
+    public GameObject uiCanvas;
 
 
     public static bool HaveGun = true;
     [SerializeField] GameObject Crosshair;
     // [SerializeField] AudioClip GunShotSound;
-    public AudioSource ammoPickup;
-    public AudioSource healthPickup;
+  //  public AudioSource ammoPickup;
+ //   public AudioSource healthPickup;
     // private AudioSource MyPlayer;
 
     //test
@@ -37,8 +39,10 @@ public class PlayerWeapon : MonoBehaviour
     public AudioClip emptyTriggerClip;
     public AudioClip deathClip;
 
-    public AudioClip AmmoPickupClip;
-    public AudioClip HealthPickupClip;
+    public AudioClip ammoPickupClip;
+    public AudioClip healthPickupClip;
+    public AudioClip hitClip;
+    public AudioClip zombiehitClip;
 
     public Transform shotDir;
 
@@ -55,6 +59,8 @@ public class PlayerWeapon : MonoBehaviour
     int ammoClipMax = 10;
 
 
+    float canvasWidth;
+    float canvasHeight;
 
 
     //test 
@@ -63,9 +69,20 @@ public class PlayerWeapon : MonoBehaviour
 
     public void TakeHit(float amount)
     {
-        //getting hit sound xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  
+       
+        SoundManager.instance.PlaySoundFX(hitClip);
         health = (int)Mathf.Clamp(health - amount, 0, maxHealth);
         healthbar.value = health;
+
+
+        GameObject bloodSplatter = Instantiate(uiBloodPrefab);
+        bloodSplatter.transform.SetParent(uiCanvas.transform);
+        bloodSplatter.transform.position = new Vector3(Random.Range(0, canvasWidth), Random.Range(0, canvasHeight), 0);
+
+
+        Destroy(bloodSplatter, 2.2f);
+
+
         //Debug.Log("Health " + health);
 
         if (health <= 0)
@@ -84,9 +101,9 @@ public class PlayerWeapon : MonoBehaviour
     }
     void Start()
     {
-      //  rb = this.GetComponent<Rigidbody>();
+    
         Crosshair.gameObject.SetActive(false);
-      //  MyPlayer = GetComponent<AudioSource>();
+      
 
         values();
         
@@ -104,39 +121,36 @@ public class PlayerWeapon : MonoBehaviour
     void ProcessZombieHit()
     {
         RaycastHit hitInfo;
-        if(Physics.Raycast(shotDir.position, shotDir.forward, out hitInfo, 200))
+        if (Physics.Raycast(shotDir.position, shotDir.forward, out hitInfo, 200))
         {
             GameObject hitZombie = hitInfo.collider.gameObject;
-            if(hitZombie.tag == "Zombie")
-            {
+            if (hitZombie.tag == "Zombie")
+            {//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX different volume hit
                 GameObject blood = Instantiate(bloodPrefab, hitInfo.point, Quaternion.identity);
                 blood.transform.LookAt(this.transform.position);
+                SoundManager.instance.PlayZombieFX(zombiehitClip);
                 Destroy(blood, 0.5f);
 
-                      hitZombie.GetComponent<ZombieAI>().shotsTaken++;
-                    if (hitZombie.GetComponent<ZombieAI>().shotsTaken ==
-                     hitZombie.GetComponent<ZombieAI>().shotsRequired)
+                hitZombie.GetComponent<ZombieAI>().shotsTaken++;
+                if (hitZombie.GetComponent<ZombieAI>().shotsTaken ==
+                 hitZombie.GetComponent<ZombieAI>().shotsRequired)
 
-                     if (hitZombie.tag == "Zombie")
-                        {
+                    if (Random.Range(0, 10) < 5)
+                    {
                         GameObject rdPrefab = hitZombie.GetComponent<ZombieAI>().ragdoll;
                         GameObject newRD = Instantiate(rdPrefab, hitZombie.transform.position, hitZombie.transform.rotation);
                         newRD.transform.Find("Hips").GetComponent<Rigidbody>().AddForce(shotDir.forward * 10000);
                         Destroy(hitZombie);
+
                     }
-              
-
-              //  hitZombie.GetComponent<ZombieAI>().shotsTaken++;
-             //   if (hitZombie.GetComponent<ZombieAI>().shotsTaken ==
-             //       hitZombie.GetComponent<ZombieAI>().enemyHealth)
+                    else
+                    {
+                        hitZombie.GetComponent<ZombieAI>().killZombie();
+                    }
             }
-            else
-            {
-              //  if hitZombie.GetComponent<ZombieAI>().killZombie();
-            }
-
         }
     }
+    
 
     
         // Update is called once per frame
@@ -195,6 +209,11 @@ public class PlayerWeapon : MonoBehaviour
             ammoClip += ammoAvaliable;
             ammoReserves.text = ammo + "";
             ammoClipAmount.text = ammoClip + "";
+
+            canvasWidth = uiCanvas.GetComponent<RectTransform>().rect.width;
+            canvasHeight = uiCanvas.GetComponent<RectTransform>().rect.height;
+
+
           //  Debug.Log("Ammo Left: " + ammo);
           //  Debug.Log("Ammo in Clip" + ammoClip);
         }
@@ -212,7 +231,7 @@ public class PlayerWeapon : MonoBehaviour
             Debug.Log("Ammo: " + ammo);
             Destroy(col.gameObject);
             ammoReserves.text = ammo + "";
-            SoundManager.instance.PlaySoundFX(AmmoPickupClip);
+            SoundManager.instance.PlaySoundFX(ammoPickupClip);
             //   ammoPickup.Play();
 
 
@@ -224,19 +243,11 @@ public class PlayerWeapon : MonoBehaviour
             healthbar.value = health;
             Debug.Log("MedBox: " + health);
             Destroy(col.gameObject);
-            SoundManager.instance.PlaySoundFX(HealthPickupClip);
+            SoundManager.instance.PlaySoundFX(healthPickupClip);
             //healthPickup.Play();
 
         }
-        else if(col.gameObject.tag == "Lava")
-        {
-            health = Mathf.Clamp(health -50, 0, maxHealth);
-            Debug.Log("Health Level: " + health);
-            if(health <= 0)
-            {
-              //  deathSound.Play();
-            }
-        }
+     
     }  
 
 
