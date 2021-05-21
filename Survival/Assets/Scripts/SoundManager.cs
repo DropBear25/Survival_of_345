@@ -2,23 +2,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class SoundManager : MonoBehaviour
 {
 
     public static SoundManager instance;
-    public AudioSource soundFX;
+    public AudioSource soundFX, backgroundHorror;
 
 
-    void Start()
+    public AudioClip[] horrorMusic;
+
+    
+
+    void Awake()
     {
         instance = this;
     }
 
-    // Update is called once per frame
+    private void Start()
+    {
+        if (!backgroundHorror.playOnAwake)
+        {
+            backgroundHorror.clip = horrorMusic[Random.Range(0, horrorMusic.Length)];
+            backgroundHorror.Play();
+        }
+    }
+
+
+
+
     void Update()
     {
-        
+        if (!backgroundHorror.isPlaying)
+        {
+            backgroundHorror.clip = horrorMusic[Random.Range(0, horrorMusic.Length)];
+            backgroundHorror.Play();
+        }
     }
 
     public void PlaySoundFX(AudioClip clip)
