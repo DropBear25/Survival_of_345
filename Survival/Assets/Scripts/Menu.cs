@@ -5,24 +5,41 @@ using UnityEngine.SceneManagement;
 public class Menu : MonoBehaviour
 {
 
-    public int speed;
-  
-public void LoadGame()
+    //  public int speed;
+    public AudioClip SelectClip;
+
+
+
+
+
+    public void LoadGame()
     {
-        SceneManager.LoadScene(0);
+        //SceneManager.LoadScene(2);
+        StartCoroutine(Wait());
+      //  yield return new WaitForSeconds(5);
+
+        SoundManager.instance.PlaySoundFX(SelectClip);
+
+
+    }
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene(2);
     }
 
 
-
-    public void QuitGame()
+        public void QuitGame()
     {
         Application.Quit();
+        SoundManager.instance.PlaySoundFX(SelectClip);
     }
 
 
     private void Update()
     {
-        transform.Rotate(0, speed, 0);
+   //     transform.Rotate(0, speed, 0);
     }
 
 
