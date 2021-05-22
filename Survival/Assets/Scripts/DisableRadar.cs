@@ -7,16 +7,22 @@ public class DisableRadar : MonoBehaviour
 
 
     [SerializeField] GameObject Radar;
-   public AudioClip whitenoiseClip;
+   public AudioSource Audio2;
+    public bool alreadyPlayed = false;
 
+    private void Start()
+    {
+        Audio2 = GetComponent<AudioSource>();
+    }
 
 
     private void OnTriggerEnter(Collider other)
     {
-        Radar.gameObject.SetActive(false);
-        SoundManager.instance.PlaySoundFX(whitenoiseClip);
-
-        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        //Audio "Radar fuzzy it looks like its gone off, keep following the trail you should see a house go to it!"
+       Radar.gameObject.SetActive(false);
+        alreadyPlayed = true;
+      Audio2.Play();  
     }
+
+
+
 }

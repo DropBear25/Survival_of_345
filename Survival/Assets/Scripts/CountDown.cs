@@ -14,8 +14,11 @@ public class CountDown : MonoBehaviour
 
     private bool Helicopter = false;
    [SerializeField] GameObject AudioHelicopter;
+    [SerializeField] GameObject Audio4;
 
     [SerializeField] Text countdownText;
+
+
 
     void Start()
     {
@@ -34,6 +37,7 @@ public class CountDown : MonoBehaviour
         if (currentTime <= 15)
         {
             AudioHelicopter.gameObject.SetActive(true);
+
             //    helicopter();
             // SoundManager.instance.PlaySoundFX(helicopterClip);
             countdownText.color = Color.red;
@@ -50,9 +54,9 @@ public class CountDown : MonoBehaviour
 
         if (currentTime <= 10 )
         {
-           
+            Audio4.gameObject.SetActive(true);
             //    helicopter();
-            // SoundManager.instance.PlaySoundFX(helicopterClip);
+
             countdownText.color = Color.red;
         
           

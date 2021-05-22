@@ -89,15 +89,16 @@ public class PlayerWeapon : MonoBehaviour
         {
             StartCoroutine(PlayerDeath());
             //PUT IN AN ENUMERATOR AND GAME OVER SCENE HERE XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-            Debug.Log("Dead as a doornail");
+          
         }
     }
 
     IEnumerator PlayerDeath()
     {
         SoundManager.instance.PlaySoundFX(deathClip);
-        yield return new WaitForSeconds(3);
-        //scene manager 
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene(3);
+        //scene manager
     }
     void Start()
     {
@@ -228,7 +229,7 @@ public class PlayerWeapon : MonoBehaviour
         if (col.gameObject.tag == "Ammo" && ammo < maxAmmo)
         {
             ammo = Mathf.Clamp(ammo + 10, 0, maxAmmo);
-            Debug.Log("Ammo: " + ammo);
+          //  Debug.Log("Ammo: " + ammo);
             Destroy(col.gameObject);
             ammoReserves.text = ammo + "";
             SoundManager.instance.PlaySoundFX(ammoPickupClip);
@@ -241,7 +242,7 @@ public class PlayerWeapon : MonoBehaviour
 
             health = Mathf.Clamp(health + 25, 0, maxHealth);
             healthbar.value = health;
-            Debug.Log("MedBox: " + health);
+           // Debug.Log("MedBox: " + health);
             Destroy(col.gameObject);
             SoundManager.instance.PlaySoundFX(healthPickupClip);
             //healthPickup.Play();

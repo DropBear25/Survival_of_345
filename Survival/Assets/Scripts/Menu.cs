@@ -9,6 +9,20 @@ public class Menu : MonoBehaviour
     public AudioClip SelectClip;
 
 
+    private void Start()
+    {
+        Cursor.visible = true;
+    }
+
+
+    public void LoadMenu()
+    {
+
+
+        SceneManager.LoadScene(1);
+        SoundManager.instance.PlaySoundFX(SelectClip);
+    }
+
 
 
 

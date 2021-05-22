@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/UndeadWoods.unity
     guid: 3cae56b00c1ec714f99b9cc20048960b
+  - enabled: 1
+    path: Assets/Scenes/GameOver.unity
+    guid: 309fb7d3646612940a3c7f2eb4e19b77
+  - enabled: 1
+    path: Assets/Scenes/Credits_Thankyou.unity
+    guid: 37eb99717906338408f99b48f701c935
   m_configObjects: {}

@@ -8,10 +8,10 @@ public class SoundManager : MonoBehaviour
 {
 
     public static SoundManager instance;
-    public AudioSource soundFX, backgroundHorror;
+    public AudioSource soundFX;
 
 
-    public AudioClip[] horrorMusic;
+ //   public AudioClip[] horrorMusic;
 
     
 
@@ -22,11 +22,7 @@ public class SoundManager : MonoBehaviour
 
     private void Start()
     {
-        if (!backgroundHorror.playOnAwake)
-        {
-            backgroundHorror.clip = horrorMusic[Random.Range(0, horrorMusic.Length)];
-            backgroundHorror.Play();
-        }
+       
     }
 
 
@@ -34,11 +30,7 @@ public class SoundManager : MonoBehaviour
 
     void Update()
     {
-        if (!backgroundHorror.isPlaying)
-        {
-            backgroundHorror.clip = horrorMusic[Random.Range(0, horrorMusic.Length)];
-            backgroundHorror.Play();
-        }
+       
     }
 
     public void PlaySoundFX(AudioClip clip)
