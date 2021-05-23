@@ -118,7 +118,7 @@ bool EnemyIsAlive()
 
     void SpawnEnemy(Transform _enemy)
     {
-        Debug.Log("Spawning Enemy" + _enemy.name);
+       
 
        
 

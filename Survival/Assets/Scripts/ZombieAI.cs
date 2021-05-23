@@ -104,7 +104,7 @@ public class ZombieAI : MonoBehaviour
         }   */
       if(target == null)
         {
-           target = GameObject.FindWithTag("Player");
+           target = GameObject.FindWithTag("_Player");
         //    SoundManager.instance.PlaySoundFX(MurmerClip);
             return;
         }

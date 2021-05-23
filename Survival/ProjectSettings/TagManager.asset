@@ -9,6 +9,7 @@ TagManager:
   - MedBox
   - Zombie
   - Ragdoll
+  - _Player
   layers:
   - Default
   - TransparentFX

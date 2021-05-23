@@ -2392,7 +2392,7 @@ GameObject:
   - component: {fileID: 400927482}
   m_Layer: 0
   m_Name: LightBreathing
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3553,19 +3553,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4950778236875488401, guid: 5564243e975f0444d9eb470a3c09b584, type: 3}
       propertyPath: m_Size.y
-      value: 6.6655273
+      value: 67.66095
       objectReference: {fileID: 0}
     - target: {fileID: 4950778236875488401, guid: 5564243e975f0444d9eb470a3c09b584, type: 3}
       propertyPath: m_Center.y
-      value: 0.50616455
+      value: 31.003876
       objectReference: {fileID: 0}
     - target: {fileID: 4950778236875488401, guid: 5564243e975f0444d9eb470a3c09b584, type: 3}
       propertyPath: m_Size.z
-      value: 68.56827
+      value: 213.3447
       objectReference: {fileID: 0}
     - target: {fileID: 4950778236875488401, guid: 5564243e975f0444d9eb470a3c09b584, type: 3}
       propertyPath: m_Center.z
-      value: 14.28006
+      value: 86.668274
       objectReference: {fileID: 0}
     - target: {fileID: 4950778236875488401, guid: 5564243e975f0444d9eb470a3c09b584, type: 3}
       propertyPath: m_IsTrigger
@@ -4533,7 +4533,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: _Player
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
       propertyPath: m_IsActive
@@ -4542,6 +4542,10 @@ PrefabInstance:
     - target: {fileID: 100002, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
+      propertyPath: m_TagString
+      value: MainCamera
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5097,7 +5101,7 @@ GameObject:
   - component: {fileID: 1420157114}
   m_Layer: 0
   m_Name: HeavyBreathing
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5696,7 +5700,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1751845279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6726,6 +6730,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5754707758464776681, guid: 792799468f687e641a446f4fe33e6385, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5754707758464776686, guid: 792799468f687e641a446f4fe33e6385, type: 3}
       propertyPath: m_Name
       value: jill

@@ -194,7 +194,7 @@ public class PlayerWeapon : MonoBehaviour
                     SoundManager.instance.PlaySoundFX(emptyTriggerClip);
              //   triggerSound.Play();
                 //Empty gun xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                   // Debug.Log("Ammo Left in Clip: " + ammoClip);            
+                          
             }
 
 
