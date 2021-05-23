@@ -7,7 +7,6 @@ TagManager:
   - Gun
   - Ammo
   - MedBox
-  - Lava
   - Zombie
   - Ragdoll
   layers:
@@ -19,7 +18,7 @@ TagManager:
   - UI
   - 
   - 
-  - AI Entity
+  - Post Processing
   - Obstacle
   - Arms
   - AI Entity Trigger

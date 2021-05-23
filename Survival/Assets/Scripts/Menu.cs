@@ -19,7 +19,7 @@ public class Menu : MonoBehaviour
     {
 
 
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
         SoundManager.instance.PlaySoundFX(SelectClip);
     }
 
@@ -40,7 +40,7 @@ public class Menu : MonoBehaviour
     IEnumerator Wait()
     {
         yield return new WaitForSeconds(2);
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(1);
     }
 
 

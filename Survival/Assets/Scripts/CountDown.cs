@@ -69,7 +69,7 @@ public class CountDown : MonoBehaviour
         {
             currentTime = 0;
          //   AudioHelicopter.gameObject.SetActive(false);
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(4);
 
         }
 

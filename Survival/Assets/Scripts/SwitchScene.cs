@@ -8,7 +8,7 @@ public class SwitchScene : MonoBehaviour
 
      void OnTriggerEnter(Collider other)
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(2);
        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
     }
 
