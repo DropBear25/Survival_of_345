@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/UndeadWoods.unity
     guid: 3cae56b00c1ec714f99b9cc20048960b
   - enabled: 1
-    path: Assets/Scenes/Surival.unity
+    path: Assets/Scenes/Survival.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
     path: Assets/Scenes/GameOver.unity
